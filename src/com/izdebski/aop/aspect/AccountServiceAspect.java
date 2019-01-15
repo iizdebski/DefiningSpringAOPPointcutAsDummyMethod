@@ -1,32 +1,28 @@
 package com.izdebski.aop.aspect;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class AccountServiceAspect {
 
-    @Around("execution(* com.izdebski.service.impl.AccountServiceImpl.*(..))")
-    public Object aroundAdvice(ProceedingJoinPoint joinPoint) {
-        System.out.println("Before method:" + joinPoint.getSignature().getName() + ",Class:" + joinPoint.getTarget()
-                .getClass().getSimpleName());
+    @Pointcut("execution(* com.izdebski.service.impl.AccountServiceImpl.*(..))")
+    public void selectAll(){
 
-        long sTime = System.currentTimeMillis();
-        Object object = null;
-        try {
-            object=joinPoint.proceed();
-        } catch (Throwable ex) {
-            System.out.println(ex.getMessage());
-        }
-        System.out.println("After method:"+joinPoint.getSignature().getName()+",Class:"+joinPoint.getTarget()
-        .getClass().getSimpleName());
-        long eTime = System.currentTimeMillis();
-        System.out.println("Total execution time taken by Method"+joinPoint.getSignature().getName() + " is :" + (eTime-sTime)
-        + " ms");
-        return object;
+    }
+
+    @Before(value= "execution(* com.izdebski.service.impl.AccountServiceImpl.*(..))")
+    public void beforeAdvice(JoinPoint joinPoint){
+        System.out.println("Before method:"+joinPoint.getSignature().getName()+",Class:"+joinPoint.getTarget().getClass().getSimpleName());
+    }
+
+    @After(value = "selectAll()")
+    public void afterAdvice(JoinPoint joinPoint){
+        System.out.println("After method:"+joinPoint.getSignature().getName()+",Class:"+joinPoint.getTarget().getClass().getSimpleName());
     }
 }

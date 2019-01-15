@@ -4,11 +4,10 @@ import com.izdebski.model.Account;
 import org.springframework.stereotype.Service;
 
 @Service("accountService")
-public class AccountServiceImpl {
+public class AccountServiceImpl implements AccountService {
 
-    public Account updateAccountBalance(Account account, Long amount){
-
-        System.out.println("Account No:" + account.getAccountNumber()+", Amount:" + amount);
-        return account;
+    @Override
+    public void updateAccountBalance(Account account, Long amount) {
+        System.out.println("Account No:"+account.getAccountNumber()+", Amount:"+amount);
     }
 }
